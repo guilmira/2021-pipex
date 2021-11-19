@@ -6,15 +6,15 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 13:08:33 by guilmira          #+#    #+#              #
-#    Updated: 2021/11/19 12:04:58 by guilmira         ###   ########.fr        #
+#    Updated: 2021/11/19 12:36:17 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ARGS = infile.txt
+ARGS = infile.txt outfile.txt
 #--------------------------------------------------------------------------------------------------------------COMPILER
 NAME		= pipex
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -g -fsanitize=address
 #--------------------------------------------------------------------------------------------------------------LIBS
 LIB_DIR		= libft_submodule
 LIB			= $(LIB_DIR)/libft.a

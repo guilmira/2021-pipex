@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:47 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/19 12:03:55 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/19 12:40:22 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int read_form_file(char *path, char **line)
 	gnl = get_next_line(fd_file, line);
 	if (gnl < 0)
 		ft_shut(GNL_ERROR, 1);
+	close(fd_file);
 	return (1);
 	
 }
@@ -34,13 +35,16 @@ int process_son(int fd[2], char *path)
 {
 	int	ex_write;
 	char *line;
+	char **table;
+	char *command_path;
 
 	line = NULL;
-	ex_write = fd[1];
-	close(fd[0]);
+	ex_write = prepare_process(fd[1], fd[0]);
 	read_form_file(path, &line);
-	//dup2(ex_write, STDOUT_FILENO);
-	execlp("/bin/ls", "ls", "-l", NULL);
-	write(ex_write, line, ft_strlen(line));
+	table = ft_split(line, ' ');
+	command_path = ft_strjoin(PATH_BIN, table[0]);
+	dup2(ex_write, STDOUT_FILENO);
+	execlp(command_path, table[0], table[1], NULL);
+	//close(ex_write);
 	exit(0);
 }

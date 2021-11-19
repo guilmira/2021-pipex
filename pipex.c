@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/17 09:30:44 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/17 10:00:12 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int process_origin(int fd[2])
 	return (1);
 }
 
-int read_form_file(char *path)
+int read_form_file(char *path, char )
 {
 	int fd;
 	int gnl;

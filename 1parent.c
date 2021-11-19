@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   1parent.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/19 12:04:22 by guilmira         ###   ########.fr       */
+/*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
+/*   Updated: 2021/11/19 11:04:29 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-# include "libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <sys/wait.h>
+int process_origin(int fd[2])
+{
+	int	ex_read;
+	char *line;
+	int gnl;
 
-# include <stdio.h>
-
-# define ARG "Incorrect arguments\n"
-# define MSG "Pipe function failure\n"
-# define GNL_ERROR "Problem with GNL\n"
-
-void ft_shut(char *str, int i);
-int process_origin(int fd[2]);
-int process_son(int fd[2], char *path);
-int	parser(int argc, char *argv[]);
-#endif
+	ex_read = fd[0];
+	close(fd[1]);
+	gnl = get_next_line(ex_read, &line);
+	if (gnl < 0)
+		ft_shut(GNL_ERROR, 1);
+	printf("%s\n", line);
+	return (1);
+}

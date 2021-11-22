@@ -6,11 +6,11 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 13:08:33 by guilmira          #+#    #+#              #
-#    Updated: 2021/11/19 12:36:17 by guilmira         ###   ########.fr        #
+#    Updated: 2021/11/22 16:20:24 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ARGS = infile.txt outfile.txt
+ARGS = 1files/infile.txt "ls -l" "wc -l" 1files/outfile.txt
 #--------------------------------------------------------------------------------------------------------------COMPILER
 NAME		= pipex
 CC			= gcc

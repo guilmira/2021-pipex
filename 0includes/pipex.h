@@ -6,29 +6,39 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/19 12:35:19 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/22 16:15:25 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+/* LIBS */
 # include "libft.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
-
+/* DEBUGGING */
 # include <stdio.h>
-
-# define ARGUMENTS 3
+/* FILE PATHS */
+# define PATH_BIN "/bin/"
+# define PATH_USR "/usr/bin/"
+# define FILE_NAME "outfile.txt"
+# define FULL_PERMISSIONS 0777
+# define RESTRICTED_PERM 777
+/* ERROR MESSAGES */
+# define ARGUMENTS 5
 # define ARG "Incorrect arguments\n"
 # define MSG "Pipe function failure\n"
 # define GNL_ERROR "Problem with GNL\n"
-# define PATH_BIN "/bin/"
-
-void ft_shut(char *str, int i);
-int process_origin(int fd[2], char *path);
-int process_son(int fd[2], char *path);
-int	parser(int argc, char *argv[]);
-int	prepare_process(int fd_to_prepare, int fd_to_close);
+/* PARSER */
+int		parser(int argc, char *argv[]);
+int		prepare_process(int fd_to_prepare, int fd_to_close);
+/* PARENT PROCESS */
+int	process_origin(int fd[2], char *command2, char *path_out);
+/* SON PROCESS */
+int		process_son(int fd[2], char *path);
+int		second_son(int ex_read, char *command2, char *path_out);
+/* AUXILIAR */
+void	ft_shut(char *str, int i);
 #endif

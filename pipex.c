@@ -6,12 +6,18 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/19 12:42:28 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/22 14:58:39 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/** EXECUTION : /pipex file1 command1 command2 file2
+ * The program will mimic the behaviour of '|' in shell.
+ * 1. Parser arguments.
+ * 2. Execute pipe and fork main process.
+ * 3. Child process will 
+ * 4. Parent process will read command and write it to file. */
 int	main(int argc, char *argv[])
 {
 	int	fd[2];
@@ -23,8 +29,10 @@ int	main(int argc, char *argv[])
 	if (pipe(fd) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
+	if (identifier == -1)
+		ft_shut("Error at fork creation\n", 0);
 	if (identifier > 0)
-		process_origin(fd, argv[2]);
+		process_origin(fd, argv[3], argv[4]);
 	else if (identifier == 0)
 		process_son(fd, argv[1]);
 	else

@@ -6,21 +6,24 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/19 12:35:33 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/22 13:36:31 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/** PURPOSE : Check argument counter.
+ * This parser does not check the values themselves off argv. */
 int	parser(int argc, char *argv[])
 {
 	if (argc != ARGUMENTS)
 		return (0);
-	//check argv
 	argv = (char **)argv;
 	return (1);
 }
 
+/** PURPOSE : Close fork file pointer replica that is not
+ * to be used. */
 int	prepare_process(int fd_to_prepare, int fd_to_close)
 {
 	close(fd_to_close);

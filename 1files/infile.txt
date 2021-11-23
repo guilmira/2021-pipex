@@ -1,1 +1,3 @@
-ls -l
+0includes       1files          2son.c          4auxiliar.o     es.subject.pdf  pipex.c
+0parser.c       1parent.c       2son.o          Makefile        libft_submodule pipex.o
+0parser.o       1parent.o       4auxiliar.c     README.md       pipex

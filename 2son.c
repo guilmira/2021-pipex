@@ -6,48 +6,41 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:47 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/23 13:49:51 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/23 16:05:53 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	read_form_file(char *path, char **line)
+static int	input_form_file(char *path)
 {
 	int	fd_file;
-	int	gnl;
 
 	fd_file = open(path, O_RDONLY);
 	if (fd_file < 0)
 		ft_shut("Problem reading file\n", 1);
-	gnl = get_next_line(fd_file, line);
-	if (gnl < 0)
-		ft_shut(GNL_ERROR, 1);
+	dup2(fd_file, STDIN_FILENO);
 	close(fd_file);
 	return (1);
 }
 
 /** PURPOSE : Child process function. */
-int	process_son(int fd[2], char *path)
+int	process_son(int fd[2], char *path, t_command *command_list)
 {
 	int		ex_write;
-	char	*line;
 	char	**table;
 	char	*command_path;
 
-	line = NULL;
 	ex_write = prepare_process(fd[0], fd[1]);
-	//dup2(fd[], STD)
-	read_form_file(path, &line);
-	table = ft_split(line, ' ');
-	command_path = ft_strjoin(PATH_BIN, table[0]);
+	input_form_file(path);
+	table = command_list->command1;
+	command_path = command_list->path1;
 	if (dup2(ex_write, STDOUT_FILENO) == -1)
 		ft_shut("Error with dup2\n", 0);
 	close(ex_write);
 	if (execve(command_path, table, NULL) == -1)
 		ft_shut("Error with execve\n", 0);
-	//close(ex_write); esto ya no se eecuta, y se cierra en padre
-	exit(0); //tampoco se ejecuta
+	return (0);
 }
 
 /** PURPOSE : Second child process function. */

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/22 16:15:25 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/23 13:45:51 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@
 # define GNL_ERROR "Problem with GNL\n"
 /* PARSER */
 int		parser(int argc, char *argv[]);
-int		prepare_process(int fd_to_prepare, int fd_to_close);
+int		prepare_process(int fd_to_close, int fd_to_prepare);
 /* PARENT PROCESS */
-int	process_origin(int fd[2], char *command2, char *path_out);
+int		process_origin(int fd[2], char *command2, char *path_out);
 /* SON PROCESS */
 int		process_son(int fd[2], char *path);
 int		second_son(int ex_read, char *command2, char *path_out);

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/22 15:56:23 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/23 13:46:09 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	process_origin(int fd[2], char *command2, char *path_out)
 	int		ex_read;
 	
 	usleep(1000);
-	ex_read = prepare_process(fd[0], fd[1]);
+	ex_read = prepare_process(fd[1], fd[0]);
 	identifier = fork();
 	if (identifier == -1)
 		ft_shut("Error at fork creation\n", 0);

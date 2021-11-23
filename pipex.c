@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/22 14:58:39 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/23 13:42:55 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ int	main(int argc, char *argv[])
 	if (pipe(fd) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
-	if (identifier == -1)
-		ft_shut("Error at fork creation\n", 0);
-	if (identifier > 0)
-		process_origin(fd, argv[3], argv[4]);
-	else if (identifier == 0)
+	if (identifier == 0)
 		process_son(fd, argv[1]);
+	else if (identifier > 0)
+		process_origin(fd, argv[3], argv[4]);
 	else
-		exit(0);
+		ft_shut("Error at fork creation\n", 0);
+	exit(0);
 	return (0);
 }
+
+//close ld file descrptors after using dup2

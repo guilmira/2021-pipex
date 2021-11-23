@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/22 13:36:31 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/23 13:45:34 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	parser(int argc, char *argv[])
 
 /** PURPOSE : Close fork file pointer replica that is not
  * to be used. */
-int	prepare_process(int fd_to_prepare, int fd_to_close)
+int	prepare_process(int fd_to_close, int fd_to_prepare)
 {
 	close(fd_to_close);
 	return (fd_to_prepare);

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:47 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/22 16:21:02 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/23 13:49:51 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,14 @@ int	process_son(int fd[2], char *path)
 	char	*command_path;
 
 	line = NULL;
-	ex_write = prepare_process(fd[1], fd[0]);
+	ex_write = prepare_process(fd[0], fd[1]);
+	//dup2(fd[], STD)
 	read_form_file(path, &line);
 	table = ft_split(line, ' ');
 	command_path = ft_strjoin(PATH_BIN, table[0]);
 	if (dup2(ex_write, STDOUT_FILENO) == -1)
 		ft_shut("Error with dup2\n", 0);
+	close(ex_write);
 	if (execve(command_path, table, NULL) == -1)
 		ft_shut("Error with execve\n", 0);
 	//close(ex_write); esto ya no se eecuta, y se cierra en padre

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/23 16:04:56 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/24 13:06:21 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,31 @@ int	write_to_file(int path, char *line)
 	return (1);
 }
 
-int	parent_continues(void)
+void	clean_memory(t_command *command_list)
 {
-	/* int		fd_output;
-	int		ex_read;
-	char	*line;
-	int		gnl; */
-
-	/* usleep(1000);
-
-	gnl = get_next_line(ex_read, &line);
-	while (gnl)
+	if (command_list)
 	{
-		write_to_file(fd_output, line);
-		gnl = get_next_line(ex_read, &line);
+		if (command_list->command1)
+		{
+			free(command_list->command1);
+			free(command_list->command2);
+			free(command_list->path1);
+			free(command_list->path2);
+			/* free(command_list->file_input);
+			free(command_list->file_output); */
+		}
 	}
-	if (gnl < 0)
-		ft_shut(GNL_ERROR, 1);
-	close(fd_output);
-	close(ex_read); */
-	return (1);
+}
+
+void	parent_continues(t_command *command_list)
+{
+	//close_fd();
+	clean_memory(command_list);
+	//printf("%s\n", command_list->path1);
 }
 
 /** PURPOSE : Parent process function. */
-int	process_origin(int fd[2], char *command2, char *path_out)
+int	process_origin(int fd[2], t_command *command_list)
 {
 	int		identifier;
 	int		ex_read;
@@ -50,11 +51,12 @@ int	process_origin(int fd[2], char *command2, char *path_out)
 	usleep(1000);
 	ex_read = prepare_process(fd[1], fd[0]);
 	identifier = fork();
-	if (identifier == -1)
-		ft_shut("Error at fork creation\n", 0);
 	if (identifier == 0)
-		second_son(ex_read, command2, path_out);
+		second_son(ex_read, command_list->command2,\
+		command_list->path2, command_list->file_output);
+	else if (identifier > 0)
+		parent_continues(command_list);
 	else
-		parent_continues();
+		ft_shut("Error at fork creation\n", 0);
 	return (0);
 }

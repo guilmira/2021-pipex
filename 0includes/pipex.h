@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/26 14:53:15 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/26 15:44:40 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,33 @@
 # define MSG "Pipe function failure.\n"
 # define FILE_ERROR "File not found or error at opening.\n"
 # define DUP_ERROR "Dup2 function failure.\n"
+
 typedef struct s_command
 {
-	char	**command1;
-	char	**command2;
-	char	*path1;
-	char	*path2;
+	char	*path;
+	char	**command;
+}			t_command;
+
+typedef struct s_arguments
+{
+	t_list	*commands_lst;
 	char	*file_input;
 	char	*file_output;
-}			t_command;
+}			t_arguments;
 
 /* PARSER */
 int		parser(int argc, char *argv[]);
 char	*set_path(char *command, char **folders);
 int		prepare_process(int fd_to_close, int fd_to_prepare);
 /* READER */
-void	reader(char *argv[], t_command *args, char *envp[]);
+t_arguments	*reader(char *argv[], char *envp[]);
 char	*set_path(char *command, char **folders);
 /* PARENT PROCESS */
-int		process_origin(int fd[2], t_command *args);
+int		process_origin(int fd[2], t_arguments *args);
 /* SON PROCESS */
 void	process_son(int fd[2], char *path, char **command1, char *path_command);
 void	second_son(int ex_read, char **command2, char *path_command, char *path_file);
 /* AUXILIAR */
 void	ft_shut(char *str, int i);
-void	ft_clean(t_command	*args);
+void	ft_clean(t_arguments	*args);
 #endif

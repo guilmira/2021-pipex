@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:04:00 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/26 13:36:40 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/26 15:15:49 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /** PURPOSE : Free memory of program.
  * For the function to properly work, all pointers have been
  * initialized to NULL at the beginning of the program. */
-void ft_clean(t_command	*args)
+void ft_clean(t_arguments *args)
 {
 	if (args)
 	{

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/26 14:53:16 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/26 15:49:36 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,19 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	int			fd[2];
 	int			identifier;
-	t_command	*args;
+	t_arguments	*args;
 	//int status;
 	
-	args = ft_calloc(1, sizeof(t_command));
-	if (!args)
-		ft_shut(MEM, 0);
+	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
-	reader(argv, args, envp);
+	args = reader(argv, envp);
 	if (pipe(fd) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
 	if (identifier == 0)
 		process_son(fd, args->file_input, \
-		args->command1, args->path1);
+		args->commands_lst->content->command, args->commands_lst->content->path);
 	else if (identifier > 0)
 		process_origin(fd, args);
 	else

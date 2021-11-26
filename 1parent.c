@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/26 13:36:29 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/26 15:15:36 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	write_to_file(int path, char *line)
 	return (1);
 }
 
-void	clean_memory(t_command *args)
+void	clean_memory(t_arguments *args)
 {
 	if (args)
 	{
@@ -35,7 +35,7 @@ void	clean_memory(t_command *args)
 	}
 }
 
-void	parent_continues(t_command *args)
+void	parent_continues(t_arguments *args)
 {
 	//close_fd();
 	clean_memory(args);
@@ -43,7 +43,7 @@ void	parent_continues(t_command *args)
 }
 
 /** PURPOSE : Parent process function. */
-int	process_origin(int fd[2], t_command *args)
+int	process_origin(int fd[2], t_arguments *args)
 {
 	int		identifier;
 	int		ex_read;

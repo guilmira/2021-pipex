@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/24 13:06:21 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/26 13:36:29 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,31 @@ int	write_to_file(int path, char *line)
 	return (1);
 }
 
-void	clean_memory(t_command *command_list)
+void	clean_memory(t_command *args)
 {
-	if (command_list)
+	if (args)
 	{
-		if (command_list->command1)
+		if (args->command1)
 		{
-			free(command_list->command1);
-			free(command_list->command2);
-			free(command_list->path1);
-			free(command_list->path2);
-			/* free(command_list->file_input);
-			free(command_list->file_output); */
+			free(args->command1);
+			free(args->command2);
+			free(args->path1);
+			free(args->path2);
+			/* free(args->file_input);
+			free(args->file_output); */
 		}
 	}
 }
 
-void	parent_continues(t_command *command_list)
+void	parent_continues(t_command *args)
 {
 	//close_fd();
-	clean_memory(command_list);
-	//printf("%s\n", command_list->path1);
+	clean_memory(args);
+	//printf("%s\n", args->path1);
 }
 
 /** PURPOSE : Parent process function. */
-int	process_origin(int fd[2], t_command *command_list)
+int	process_origin(int fd[2], t_command *args)
 {
 	int		identifier;
 	int		ex_read;
@@ -52,10 +52,10 @@ int	process_origin(int fd[2], t_command *command_list)
 	ex_read = prepare_process(fd[1], fd[0]);
 	identifier = fork();
 	if (identifier == 0)
-		second_son(ex_read, command_list->command2,\
-		command_list->path2, command_list->file_output);
+		second_son(ex_read, args->command2,\
+		args->path2, args->file_output);
 	else if (identifier > 0)
-		parent_continues(command_list);
+		parent_continues(args);
 	else
 		ft_shut("Error at fork creation\n", 0);
 	return (0);

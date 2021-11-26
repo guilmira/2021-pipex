@@ -1,3 +1,21 @@
-0includes       1files          2son.c          4auxiliar.o     es.subject.pdf  pipex.c
-0parser.c       1parent.c       2son.o          Makefile        libft_submodule pipex.o
-0parser.o       1parent.o       4auxiliar.c     README.md       pipex
+total 2808
+drwxr-xr-x   3 guilmira  2019      102 Nov 17 09:02 0includes
+-rw-r--r--   1 guilmira  2019     1887 Nov 26 14:42 0parser.c
+-rw-r--r--   1 guilmira  2019     4216 Nov 26 14:46 0parser.o
+-rw-r--r--   1 guilmira  2019     2415 Nov 26 14:53 0reader.c
+-rw-r--r--   1 guilmira  2019     9864 Nov 26 14:53 0reader.o
+drwxr-xr-x   4 guilmira  2019      136 Nov 24 13:06 1files
+-rw-r--r--   1 guilmira  2019     1800 Nov 26 13:36 1parent.c
+-rw-r--r--   1 guilmira  2019     7180 Nov 26 14:46 1parent.o
+-rw-r--r--   1 guilmira  2019     2107 Nov 24 12:56 2son.c
+-rw-r--r--   1 guilmira  2019     6996 Nov 26 11:03 2son.o
+-rw-r--r--   1 guilmira  2019     1530 Nov 26 13:36 4auxiliar.c
+-rw-r--r--   1 guilmira  2019     3524 Nov 26 14:46 4auxiliar.o
+-rw-r--r--   1 guilmira  2019     2429 Nov 26 14:55 Makefile
+-rw-r--r--   1 guilmira  2019      245 Nov 23 13:55 README.md
+-rw-r--r--@  1 guilmira  2019  1323792 Nov 23 13:54 es.subject.pdf
+drwxr-xr-x  21 guilmira  2019      714 Nov 26 13:17 libft_submodule
+-rwxr-xr-x   1 guilmira  2019    24692 Nov 26 14:53 pipex
+-rw-r--r--   1 guilmira  2019     1939 Nov 26 14:53 pipex.c
+-rw-r--r--   1 guilmira  2019     7012 Nov 26 14:53 pipex.o
+-rw-r--r--   1 guilmira  2019        0 Nov 26 14:54 prueba.txt

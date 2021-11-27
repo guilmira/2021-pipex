@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/26 15:15:36 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/27 10:34:34 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ void	clean_memory(t_arguments *args)
 {
 	if (args)
 	{
-		if (args->command1)
+		if (args)
 		{
-			free(args->command1);
+			;
+			/* free(args->command1);
 			free(args->command2);
 			free(args->path1);
-			free(args->path2);
+			free(args->path2); */
 			/* free(args->file_input);
 			free(args->file_output); */
 		}
@@ -51,9 +52,11 @@ int	process_origin(int fd[2], t_arguments *args)
 	usleep(1000);
 	ex_read = prepare_process(fd[1], fd[0]);
 	identifier = fork();
+	t_command *ptr;
+	ptr = args->commands_lst->next->content;
 	if (identifier == 0)
-		second_son(ex_read, args->command2,\
-		args->path2, args->file_output);
+		second_son(ex_read, ptr->command,\
+		ptr->path, args->file_output);
 	else if (identifier > 0)
 		parent_continues(args);
 	else

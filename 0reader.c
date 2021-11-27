@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 14:35:55 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/26 15:42:23 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/27 11:04:54 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,16 @@ t_list *load_linked_list(char *argv[], char *envp[])
 	t_list		*lst;
 	t_command	*command_struct;
 
+	lst = NULL;
 	folders = get_env_path(envp);
-	command_struct = ft_calloc(1, sizeof(t_command *));
-	if (!command_struct) //check error
-		return (NULL);
 	int argc;
 	argc = 2;
 	i = -1;
 	while (++i < argc)
 	{
+		command_struct = ft_calloc(1, sizeof(t_command)); //repetido x num de args
+		if (!command_struct) //check error
+			return (NULL);
 		command_struct->command = ft_split(argv[i + 2], ' ');
 		command_struct->path = set_path(command_struct->command[0], folders);
 		ft_lstadd_back(&lst, ft_lstnew(command_struct));
@@ -99,7 +100,7 @@ t_list *load_linked_list(char *argv[], char *envp[])
 }
 
 /** PURPOSE : Load arguments into structure. */
-t_arguments	*reader(char *argv[], char *envp[])
+t_arguments	*arg_reader(char *argv[], char *envp[])
 {
 	
 	t_arguments	*args;
@@ -107,6 +108,7 @@ t_arguments	*reader(char *argv[], char *envp[])
 	args = ft_calloc(1, sizeof(t_arguments));
 	if (!args)
 		ft_shut(MEM, 0);
+	
 	args->commands_lst = load_linked_list(argv, envp);
 	/* if (!args->command1 || !args->command2 || \
 	!args->path1 || !args->path2)

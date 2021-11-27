@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:04:00 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/26 15:15:49 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/27 10:34:46 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void ft_clean(t_arguments *args)
 {
 	if (args)
 	{
-		if (args->command1)
+		if (args)
 		{
 			//ft_free_split(args->command1);
 			//ft_free_split(args->command2);

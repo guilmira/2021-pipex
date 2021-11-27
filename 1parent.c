@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/27 10:34:34 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/27 13:00:52 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,13 @@ void	parent_continues(t_arguments *args)
 int	process_origin(int fd[2], t_arguments *args)
 {
 	int		identifier;
-	int		ex_read;
-	
+
 	usleep(1000);
-	ex_read = prepare_process(fd[1], fd[0]);
+	close(fd[1]);
+	
 	identifier = fork();
-	t_command *ptr;
-	ptr = args->commands_lst->next->content;
 	if (identifier == 0)
-		second_son(ex_read, ptr->command,\
-		ptr->path, args->file_output);
+		last_son(fd, args, 1);
 	else if (identifier > 0)
 		parent_continues(args);
 	else

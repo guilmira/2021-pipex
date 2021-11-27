@@ -6,12 +6,12 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 13:08:33 by guilmira          #+#    #+#              #
-#    Updated: 2021/11/27 11:05:54 by guilmira         ###   ########.fr        #
+#    Updated: 2021/11/27 13:03:42 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ARGS = 1files/infile.txt "ls -l" "wc -l" 1files/outfile.txt
-#ARGS = 1files/infile.txt "grep drw" "wc -l" 1files/outfile.txt
+#ARGS = 1files/infile.txt "ls -l" "wc -l" 1files/outfile.txt
+ARGS = 1files/infile.txt "grep drw" "wc" 1files/outfile.txt
 #Shell command: 	$> 		 < file1 command1 | command2 > file2
 #Is equivalent to: 	$> ./pipex file1 command1 command2 file2
 #--------------------------------------------------------------------------------------------------------------COMPILER
@@ -39,7 +39,7 @@ $(NAME): $(OBJS) $(LIB)
 	@echo $(GREEN) "$(NAME) compiled" $(NONE)
 
 exe: $(NAME)
-	rm 1files/outfile.txt
+	#rm 1files/outfile.txt
 	./$(NAME) $(ARGS)
 
 norm:

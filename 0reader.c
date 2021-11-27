@@ -6,12 +6,14 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 14:35:55 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/27 11:04:54 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/27 12:23:36 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/** PURPOSE : Locates environment variable that starts with
+ * the characters PATH= and splits it into a table. */
 static char **get_full_path(char *envp[])
 {
 	int		i;
@@ -23,6 +25,7 @@ static char **get_full_path(char *envp[])
 	return (NULL);
 }
 
+/** PURPOSE : Reforms the string table by adding the char slash '/'. */
 static char	**add_slash_to_path(char **full_path)
 {
 	int i;
@@ -43,6 +46,8 @@ static char	**add_slash_to_path(char **full_path)
 	return(full_path);
 }
 
+/** PURPOSE : Returns a string table with the direction of every single
+ * folder where the commands might be contained. */
 static char **get_env_path(char *envp[])
 {
 	char	*new_string;
@@ -66,7 +71,10 @@ static char **get_env_path(char *envp[])
 	return (corrected_path);
 }
 
-t_list *load_linked_list(char *argv[], char *envp[])
+/** PURPOSE : Builds linked list by allocating memory for a structure and
+ * making that same structure the content of each node. Fills the path and 
+ * the command fields. */
+t_list *load_linked_list(char *argv[], int argc, char *envp[])
 {
 	int			i;
 	char 		**folders;
@@ -75,32 +83,28 @@ t_list *load_linked_list(char *argv[], char *envp[])
 
 	lst = NULL;
 	folders = get_env_path(envp);
-	int argc;
-	argc = 2;
+	if (!folders)
+		return (NULL);
 	i = -1;
+	argc = argc - ARGUMENT_FILES;
 	while (++i < argc)
 	{
-		command_struct = ft_calloc(1, sizeof(t_command)); //repetido x num de args
-		if (!command_struct) //check error
+		command_struct = ft_calloc(1, sizeof(t_command));
+		if (!command_struct)
+		{
+			ft_free_split(folders);
 			return (NULL);
+		}
 		command_struct->command = ft_split(argv[i + 2], ' ');
 		command_struct->path = set_path(command_struct->command[0], folders);
 		ft_lstadd_back(&lst, ft_lstnew(command_struct));
-		if (!lst) //check error
-			;
-		
 	}
-	/* args->command1 = ft_split(argv[2], ' ');
-	args->command2 = ft_split(argv[3], ' ');
-	args->path1 = set_path(args->command1[0], folders);
-	args->path2 = set_path(args->command2[0], folders); */
-
 	ft_free_split(folders);
 	return (lst);
 }
 
 /** PURPOSE : Load arguments into structure. */
-t_arguments	*arg_reader(char *argv[], char *envp[])
+t_arguments	*arg_reader(char *argv[], int argc, char *envp[])
 {
 	
 	t_arguments	*args;
@@ -108,11 +112,9 @@ t_arguments	*arg_reader(char *argv[], char *envp[])
 	args = ft_calloc(1, sizeof(t_arguments));
 	if (!args)
 		ft_shut(MEM, 0);
-	
-	args->commands_lst = load_linked_list(argv, envp);
-	/* if (!args->command1 || !args->command2 || \
-	!args->path1 || !args->path2)
-		ft_shut(ARG, 0); */
+	args->commands_lst = load_linked_list(argv, argc, envp);
+	if (!args->commands_lst)
+		ft_shut(ARG, 0);
 	args->file_input = argv[1];
 	args->file_output = argv[4];
 	return (args);

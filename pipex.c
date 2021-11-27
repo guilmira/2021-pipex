@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/27 11:06:36 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/27 13:05:35 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
  * 1. Clean memory for argument.
  * 3. Print error message. */
 //void	ft_shutdown(t_time *arg)
+
+
+
+
+
 
 
 /** EXECUTION : /pipex file1 command1 command2 file2
@@ -31,26 +36,25 @@ int	main(int argc, char *argv[], char *envp[])
 	int			identifier;
 	t_arguments	*args;
 	//int status;
-	t_command *ptr;
-	ptr = args->commands_lst->content;
 	
 	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
-	args = arg_reader(argv, envp);
+	
+	args = arg_reader(argv, argc, envp);
 	if (pipe(fd) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
 	if (identifier == 0)
-		process_son(fd, args->file_input, \
-		ptr->command, ptr->path);
+		first_son(fd, args, 0);
 	else if (identifier > 0)
 		process_origin(fd, args);
 	else
 		ft_shut("Error at fork creation\n", 0);
-	//wait()
+	//wait() neceario?
 	ft_clean(args);
 	exit(0);
 }
 
-//close ld file descrptors after using dup2
+
+//push swap mil numeros + wc

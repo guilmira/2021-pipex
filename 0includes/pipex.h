@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/27 13:05:24 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/28 13:39:44 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define FULL_PERMISSIONS 0777
 # define RESTRICTED_PERM 777
 /* ERROR MESSAGES */
-# define ARGUMENTS 5
+# define ARGUMENTS 6
 # define ARGUMENT_FILES 2
 # define MEM "Failed memory allocation.\n"
 # define ARG "Incorrect arguments.\n"
@@ -58,9 +58,11 @@ int			prepare_process(int fd_to_close, int fd_to_prepare);
 t_arguments	*arg_reader(char *argv[], int argc, char *envp[]);
 char		*set_path(char *command, char **folders);
 /* PARENT PROCESS */
-int			process_origin(int fd[2], t_arguments *args);
+int	parent_continues(int fd[2], t_arguments *args);
+int	mid_process(int fd[2], t_arguments *args);
 /* SON PROCESS */
 void		first_son(int fd[2], t_arguments *args, int command_number);
+void	mid_son(int fd_previous_read, int fd_next_write, t_arguments *args, int command_number);
 void		last_son(int fd[2], t_arguments *args, int command_number);
 /* AUXILIAR */
 void		ft_shut(char *str, int i);

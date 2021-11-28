@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 14:35:55 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/27 12:23:36 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/28 13:49:26 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,6 @@ t_arguments	*arg_reader(char *argv[], int argc, char *envp[])
 	if (!args->commands_lst)
 		ft_shut(ARG, 0);
 	args->file_input = argv[1];
-	args->file_output = argv[4];
+	args->file_output = argv[5];
 	return (args);
 }

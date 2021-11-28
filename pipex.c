@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/27 13:05:35 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/28 13:46:02 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,22 @@
  * 3. Print error message. */
 //void	ft_shutdown(t_time *arg)
 
-
-
-
-
-
-
 /** EXECUTION : /pipex file1 command1 command2 file2
  * The program will mimic the behaviour of '|' in shell.
  * 1. Parser arguments.
  * 2. Execute pipe and fork main process.
- * 3. Child process will 
+ * 3. Child process will.
  * 4. Parent process will read command and write it to file. */
 int	main(int argc, char *argv[], char *envp[])
 {
 	int			fd[2];
 	int			identifier;
 	t_arguments	*args;
-	//int status;
+	int status;
 	
 	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
-	
 	args = arg_reader(argv, argc, envp);
 	if (pipe(fd) == -1)
 		ft_shut(MSG, 0);
@@ -48,11 +41,18 @@ int	main(int argc, char *argv[], char *envp[])
 	if (identifier == 0)
 		first_son(fd, args, 0);
 	else if (identifier > 0)
-		process_origin(fd, args);
+	{
+		wait(&status);
+		mid_process(fd, args);
+		//process_origin(fd, args);
+	}
 	else
 		ft_shut("Error at fork creation\n", 0);
-	//wait() neceario?
+	
 	ft_clean(args);
+	//cat | cat | ls
+	//wait(status); Si esta fuera hara todo simutaneo. es como funciona bash
+	//si estuvies ddentro, es cuando en cada proceso espera.
 	exit(0);
 }
 

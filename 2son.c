@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:47 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/27 13:05:11 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/28 13:49:53 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static void	output_to_file(char *path)
 {
 	int	fd_file;
 
-	printf("%s\n", path);
 	fd_file = open(path, O_WRONLY | O_CREAT, FULL_PERMISSIONS);
 	if (fd_file < 0)
 		ft_shut(FILE_ERROR, 1);
@@ -92,4 +91,25 @@ void	last_son(int fd[2], t_arguments *args, int command_number)
 	output_to_file(args->file_output);
 	if (execve(command_struct->path, command_struct->command, NULL) == -1)
 		ft_shut(EXE_ERROR, 0);
+}
+
+void	mid_son(int fd_previous_read, int fd_next_write, t_arguments *args, int command_number)
+{
+	t_command	*command_struct;
+
+	command_struct = NULL;
+	command_struct = ft_lst_position(args->commands_lst, command_number);
+	if (!command_struct)
+		ft_shut(LST, 0);
+	if (dup2(fd_previous_read, STDIN_FILENO) == -1)
+		ft_shut(DUP_ERROR, 0);
+	close(fd_previous_read);
+	if (dup2(fd_next_write, STDOUT_FILENO) == -1)
+		ft_shut(DUP_ERROR, 0);
+	close(fd_next_write);
+	if (execve(command_struct->path, command_struct->command, NULL) == -1)
+		ft_shut(EXE_ERROR, 0);
+
+	
+	
 }

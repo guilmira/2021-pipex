@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/29 12:23:34 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:40:56 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,11 @@ int file_exists(char *str);
 t_arguments	*arg_reader(int argc, char *argv[], char *envp[]);
 char		*set_path(char *command, char **folders);
 /* PARENT PROCESS */
-int	parent_continues(int fd[2], t_arguments *args);
-int	mid_process(int fd[2], t_arguments *args);
+int	mid_process(int fd_read, t_arguments *args);
 /* SON PROCESS */
 void		first_son(int fd[2], t_arguments *args);
 void	mid_son(int fd_previous_read, int fd_next_write, t_arguments *args);
-void		last_son(int fd[2], t_arguments *args);
+void		last_son(int fd_read, t_arguments *args);
 /* AUXILIAR */
 void		ft_shut(char *str, int i);
 void		ft_clean(t_arguments *args);

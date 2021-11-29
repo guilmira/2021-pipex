@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:47 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/29 12:16:40 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:40:43 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	output_to_file(char *path)
 }
 
 /** PURPOSE : Last child process function. */
-void	last_son(int fd[2], t_arguments *args)
+void	last_son(int fd_read, t_arguments *args)
 {	
 	int			ex_read;
 	t_command	*command_struct;
@@ -85,7 +85,7 @@ void	last_son(int fd[2], t_arguments *args)
 	command_struct = ft_lst_position(args->commands_lst, args->command_number);
 	if (!command_struct)
 		ft_shut(LST, 0);
-	ex_read = fd[0];
+	ex_read = fd_read;
 	if (dup2(ex_read, STDIN_FILENO) == -1)
 		ft_shut(DUP_ERROR, 0);
 	close(ex_read);

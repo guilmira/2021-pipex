@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/29 12:27:45 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:41:29 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,34 @@
  * 3. Print error message. */
 //void	ft_shutdown(t_time *arg)
 
+/* static void	process_end(t_arguments *args)
+{
+	//close_fd();
+	;
+	//clean_memory(args);
+	//printf("%s\n", args->path1);
+} */
 
+/** PURPOSE : Parent process function. */
+static int	parent_continues(int fd_read, t_arguments *args)
+{
+	int	identifier;
+	int	status;
 
+	usleep(1000);
+	args->command_number++;
+	identifier = fork();
+	if (identifier == 0)
+		last_son(fd_read, args);
+	else if (identifier > 0)
+	{
+		wait(&status);
+		//process_end(args);
+	}
+	else
+		ft_shut("Error at fork creation\n", 0);
+	return (0);
+}
 
 
 /** EXECUTION : /pipex file1 command1 command2 file2
@@ -34,6 +60,7 @@ int	main(int argc, char *argv[], char *envp[])
 	int			identifier;
 	t_arguments	*args;
 	int status;
+	int fd_read;
 	
 	args = NULL;
 	if (!parser(argc, argv))
@@ -49,10 +76,14 @@ int	main(int argc, char *argv[], char *envp[])
 		wait(&status);
 		while (args->total_commands - 2)
 		{
+			printf("veces\n");
+			if (args->total_commands == 3)
+				fd_read = fd[0];
+			close(fd[1]);
 			args->total_commands--;
-			mid_process(fd, args);
+			fd_read = mid_process(fd_read, args);
 		}
-		parent_continues(fd_mid, args);
+		parent_continues(fd_read, args);
 	}
 	else
 		ft_shut("Error at fork creation\n", 0);

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 14:35:55 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/28 13:49:26 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:24:37 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static char **get_env_path(char *envp[])
 /** PURPOSE : Builds linked list by allocating memory for a structure and
  * making that same structure the content of each node. Fills the path and 
  * the command fields. */
-t_list *load_linked_list(char *argv[], int argc, char *envp[])
+static t_list *load_linked_list(char *argv[], int argc, char *envp[], int modifier)
 {
 	int			i;
 	char 		**folders;
@@ -86,7 +86,7 @@ t_list *load_linked_list(char *argv[], int argc, char *envp[])
 	if (!folders)
 		return (NULL);
 	i = -1;
-	argc = argc - ARGUMENT_FILES;
+	argc = argc - modifier;
 	while (++i < argc)
 	{
 		command_struct = ft_calloc(1, sizeof(t_command));
@@ -95,7 +95,7 @@ t_list *load_linked_list(char *argv[], int argc, char *envp[])
 			ft_free_split(folders);
 			return (NULL);
 		}
-		command_struct->command = ft_split(argv[i + 2], ' ');
+		command_struct->command = ft_split(argv[i + modifier], ' ');
 		command_struct->path = set_path(command_struct->command[0], folders);
 		ft_lstadd_back(&lst, ft_lstnew(command_struct));
 	}
@@ -104,18 +104,31 @@ t_list *load_linked_list(char *argv[], int argc, char *envp[])
 }
 
 /** PURPOSE : Load arguments into structure. */
-t_arguments	*arg_reader(char *argv[], int argc, char *envp[])
+t_arguments	*arg_reader(int argc, char *argv[], char *envp[])
 {
 	
 	t_arguments	*args;
+	int modifier;
 
+	modifier = 0;
 	args = ft_calloc(1, sizeof(t_arguments));
 	if (!args)
 		ft_shut(MEM, 0);
-	args->commands_lst = load_linked_list(argv, argc, envp);
+	args->total_commands = argc - 1;
+	if (file_detector(argc, argv))
+	{
+		args->flag_file = 1;
+		args->file_input = argv[2];
+		args->file_output = argv[6];
+		modifier = 3;
+		args->total_commands = argc - 4;
+	}
+	else
+		args->flag_file = 0;
+	args->commands_lst = load_linked_list(argv, argc, envp, modifier);
 	if (!args->commands_lst)
 		ft_shut(ARG, 0);
-	args->file_input = argv[1];
-	args->file_output = argv[5];
+	
+	args->command_number = 0;
 	return (args);
 }

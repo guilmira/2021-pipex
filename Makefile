@@ -6,13 +6,13 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 13:08:33 by guilmira          #+#    #+#              #
-#    Updated: 2021/11/28 13:51:25 by guilmira         ###   ########.fr        #
+#    Updated: 2021/11/29 11:51:55 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #ARGS = 1files/infile.txt "ls -l" "wc -l" 1files/outfile.txt
 #ARGS = 1files/infile.txt "ls -l" "grep drw" "wc -l" 1files/outfile.txt
-ARGS = 1files/infile.txt "ls -la" "grep d" "wc -l" 1files/outfile.txt
+ARGS = "<" 1files/infile.txt "ls -la" "grep drw" "wc -l" 1files/outfile.txt
 #Shell command: 	$> 		 < file1 command1 | command2 > file2
 #Is equivalent to: 	$> ./pipex file1 command1 command2 file2
 #--------------------------------------------------------------------------------------------------------------COMPILER
@@ -24,7 +24,8 @@ LIB_DIR		= libft_submodule
 LIB			= $(LIB_DIR)/libft.a
 INCLUDES	= -I ./0includes -I ./libft_submodule/0includes
 #--------------------------------------------------------------------------------------------------------------SOURCES
-SRCS		=	pipex.c 0parser.c 0reader.c 1parent.c 2son.c 4auxiliar.c
+SRCS		=	pipex.c 0parser.c 0reader.c 0type.c \
+				1parent.c 2son.c 4auxiliar.c
 OBJS		=	$(SRCS:.c=.o)
 #--------------------------------------------------------------------------------------------------------------RULES
 all: $(LIB) $(NAME)

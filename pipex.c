@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/28 13:46:02 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:27:45 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
  * 1. Clean memory for argument.
  * 3. Print error message. */
 //void	ft_shutdown(t_time *arg)
+
+
+
+
 
 /** EXECUTION : /pipex file1 command1 command2 file2
  * The program will mimic the behaviour of '|' in shell.
@@ -34,27 +38,31 @@ int	main(int argc, char *argv[], char *envp[])
 	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
-	args = arg_reader(argv, argc, envp);
+	args = arg_reader(argc, argv, envp);
 	if (pipe(fd) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
 	if (identifier == 0)
-		first_son(fd, args, 0);
+		first_son(fd, args);
 	else if (identifier > 0)
 	{
 		wait(&status);
-		mid_process(fd, args);
-		//process_origin(fd, args);
+		while (args->total_commands - 2)
+		{
+			args->total_commands--;
+			mid_process(fd, args);
+		}
+		parent_continues(fd_mid, args);
 	}
 	else
 		ft_shut("Error at fork creation\n", 0);
-	
 	ft_clean(args);
-	//cat | cat | ls
-	//wait(status); Si esta fuera hara todo simutaneo. es como funciona bash
-	//si estuvies ddentro, es cuando en cada proceso espera.
 	exit(0);
 }
 
 
 //push swap mil numeros + wc
+
+//cat | cat | ls
+	//wait(status); Si esta fuera hara todo simutaneo. es como funciona bash
+	//si estuvies ddentro, es cuando en cada proceso espera.

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/28 13:49:50 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:28:49 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,11 @@ int	parent_continues(int fd[2], t_arguments *args)
 	usleep(1000);
 	close(fd[1]);
 	
+	args->command_number++;
+	
 	identifier = fork();
 	if (identifier == 0)
-		last_son(fd, args, 2);
+		last_son(fd, args);
 	else if (identifier > 0)
 	{
 		wait(&status);
@@ -75,16 +77,18 @@ int	mid_process(int fd[2], t_arguments *args)
 	close(fd[1]);
 	if (pipe(fd_mid) == -1)
 		ft_shut(MSG, 0);
+	args->command_number++;
 	identifier = fork();
 	if (identifier == 0)
 	{
 		close(fd_mid[0]);
-		mid_son(fd[0], fd_mid[1], args, 1);
+		mid_son(fd[0], fd_mid[1], args);
 	}
 	else if (identifier > 0)
 	{
 		wait(&status);
-		parent_continues(fd_mid, args);
+		close(fd_mid[1]);
+		return (0);
 	}
 	else
 		ft_shut("Error at fork creation\n", 0);

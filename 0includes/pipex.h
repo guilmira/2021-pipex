@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/01 08:49:12 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/01 10:38:18 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_arguments
 	int		flag_file;
 	int		command_number;
 	int		total_commands;
-	int		*file_descriptors;
+	int		*fds;
 	char	*file_input;
 	char	*file_output;
 }			t_arguments;
@@ -64,11 +64,11 @@ int file_exists(char *str);
 t_arguments	*arg_reader(int argc, char *argv[], char *envp[]);
 char		*set_path(char *command, char **folders);
 /* PARENT PROCESS */
-int	mid_process(int fd_read, t_arguments *args);
+void mid_process(t_arguments *args);
 /* SON PROCESS */
-void		first_son(int fd[2], t_arguments *args);
-void	mid_son(int fd_previous_read, int fd_next_write, t_arguments *args);
-void		last_son(int fd_read, t_arguments *args);
+void		first_son(t_arguments *args);
+void	mid_son(int index, t_arguments *args);
+void		last_son(int index, t_arguments *args);
 /* AUXILIAR */
 void		ft_shut(char *str, int i);
 void		ft_clean(t_arguments *args);

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/01 09:06:13 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/01 10:41:58 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,18 @@
 } */
 
 /** PURPOSE : Parent process function. */
-static int	parent_continues(int fd_read, t_arguments *args)
+static int	parent_continues(t_arguments *args)
 {
 	int	identifier;
 	int	status;
+	int index;
 
 	usleep(1000);
 	args->command_number++;
+	index = args->command_number;
 	identifier = fork();
 	if (identifier == 0)
-		last_son(fd_read, args);
+		last_son(index, args);
 	else if (identifier > 0)
 	{
 		wait(&status);
@@ -50,16 +52,10 @@ static int	parent_continues(int fd_read, t_arguments *args)
 int	*arg_descriptors(t_arguments *args)
 {
 	int	*ptr;
-	int	number_of_pipes;
-	int	number_of_file_descriptors;
+	int	number_of_fds;
 
-	number_of_pipes = args->total_commands - 1;
-
-	if (args->flag_file)
-		number_of_file_descriptors = (number_of_pipes * 2) + 2;
-	else
-		number_of_file_descriptors = number_of_pipes * 2;
-	ptr = ft_calloc(number_of_file_descriptors, sizeof(int));
+	number_of_fds = (args->total_commands - 1) * 2;
+	ptr = ft_calloc(number_of_fds, sizeof(int));
 	if (!ptr)
 		ft_shut(MEM, 0);
 	return (ptr);
@@ -73,34 +69,30 @@ int	*arg_descriptors(t_arguments *args)
  * 4. Parent process will read command and write it to file. */
 int	main(int argc, char *argv[], char *envp[])
 {
-	int			fd[2];
 	int			identifier;
 	t_arguments	*args;
 	int status;
-	int fd_read;
 	
 	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
 	args = arg_reader(argc, argv, envp);
-	args->file_descriptors = arg_descriptors(args);
-	if (pipe(fd) == -1)
+	args->fds = arg_descriptors(args);
+	if (pipe(args->fds) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
 	if (identifier == 0)
-		first_son(fd, args);
+		first_son(args);
 	else if (identifier > 0)
 	{
 		wait(&status);
 		while (args->total_commands - 2)
 		{
-			if (args->total_commands == 3)
-				fd_read = fd[0];
-			close(fd[1]);
+			close(args->fds[1]);
 			args->total_commands--;
-			fd_read = mid_process(fd_read, args);
+			mid_process(args);
 		}
-		parent_continues(fd_read, args);
+		parent_continues(args);
 	}
 	else
 		ft_shut("Error at fork creation\n", 0);

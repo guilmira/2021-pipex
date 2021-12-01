@@ -6,13 +6,14 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 13:08:33 by guilmira          #+#    #+#              #
-#    Updated: 2021/12/01 09:07:39 by guilmira         ###   ########.fr        #
+#    Updated: 2021/12/01 09:14:55 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #ARGS = 1files/infile.txt "ls -l" "wc -l" 1files/outfile.txt
 #ARGS = 1files/infile.txt "ls -l" "grep drw" "wc -l" 1files/outfile.txt
 ARGS = "<" 1files/infile.txt "ls -la" "grep drw" "wc -l" 1files/outfile.txt
+# < 1files/infile.txt ls -la | grep drw | wc -l > 1files/outfile.txt
 #Shell command: 	$> 		 < file1 command1 | command2 > file2
 #Is equivalent to: 	$> ./pipex file1 command1 command2 file2
 #--------------------------------------------------------------------------------------------------------------COMPILER

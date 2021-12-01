@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/29 12:40:56 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/01 08:49:12 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_arguments
 	int		flag_file;
 	int		command_number;
 	int		total_commands;
+	int		*file_descriptors;
 	char	*file_input;
 	char	*file_output;
 }			t_arguments;

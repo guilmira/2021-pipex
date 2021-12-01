@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/29 12:41:29 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/01 09:06:13 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,23 @@ static int	parent_continues(int fd_read, t_arguments *args)
 	return (0);
 }
 
+int	*arg_descriptors(t_arguments *args)
+{
+	int	*ptr;
+	int	number_of_pipes;
+	int	number_of_file_descriptors;
+
+	number_of_pipes = args->total_commands - 1;
+
+	if (args->flag_file)
+		number_of_file_descriptors = (number_of_pipes * 2) + 2;
+	else
+		number_of_file_descriptors = number_of_pipes * 2;
+	ptr = ft_calloc(number_of_file_descriptors, sizeof(int));
+	if (!ptr)
+		ft_shut(MEM, 0);
+	return (ptr);
+}
 
 /** EXECUTION : /pipex file1 command1 command2 file2
  * The program will mimic the behaviour of '|' in shell.
@@ -66,6 +83,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
 	args = arg_reader(argc, argv, envp);
+	args->file_descriptors = arg_descriptors(args);
 	if (pipe(fd) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
@@ -76,7 +94,6 @@ int	main(int argc, char *argv[], char *envp[])
 		wait(&status);
 		while (args->total_commands - 2)
 		{
-			printf("veces\n");
 			if (args->total_commands == 3)
 				fd_read = fd[0];
 			close(fd[1]);
@@ -87,6 +104,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	else
 		ft_shut("Error at fork creation\n", 0);
+		
 	ft_clean(args);
 	exit(0);
 }

@@ -6,78 +6,42 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/01 10:41:58 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/01 13:23:20 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-
-/** PURPOSE : shutdown program freeing heap allocated memory.
- * 1. Clean memory for argument.
- * 3. Print error message. */
-//void	ft_shutdown(t_time *arg)
-
-/* static void	process_end(t_arguments *args)
-{
-	//close_fd();
-	;
-	//clean_memory(args);
-	//printf("%s\n", args->path1);
-} */
-
-/** PURPOSE : Parent process function. */
-static int	parent_continues(t_arguments *args)
+/** PURPOSE : End of the process.
+ * 1. Final fork + execute last son.*/
+static int	end_process(t_arguments *args)
 {
 	int	identifier;
 	int	status;
-	int index;
+	int	last_index;
 
-	usleep(1000);
 	args->command_number++;
-	index = args->command_number;
+	last_index = (args->command_number * 2) - 2;
 	identifier = fork();
 	if (identifier == 0)
-		last_son(index, args);
+		last_son(last_index, args);
 	else if (identifier > 0)
-	{
 		wait(&status);
-		//process_end(args);
-	}
 	else
-		ft_shut("Error at fork creation\n", 0);
+		ft_shut(FORK_ERROR, 0);
 	return (0);
 }
 
-int	*arg_descriptors(t_arguments *args)
+/** PURPOSE : Executes fork function to run commands.
+ * 1. Create first pipe. 
+ * 2. Fork process in a loop, and inside each son process, run command.
+ * 3. Continue running program until last fork. */
+static void	process_exe(t_arguments *args)
 {
-	int	*ptr;
-	int	number_of_fds;
+	int	i;
+	int	status;
+	int	identifier;
 
-	number_of_fds = (args->total_commands - 1) * 2;
-	ptr = ft_calloc(number_of_fds, sizeof(int));
-	if (!ptr)
-		ft_shut(MEM, 0);
-	return (ptr);
-}
-
-/** EXECUTION : /pipex file1 command1 command2 file2
- * The program will mimic the behaviour of '|' in shell.
- * 1. Parser arguments.
- * 2. Execute pipe and fork main process.
- * 3. Child process will.
- * 4. Parent process will read command and write it to file. */
-int	main(int argc, char *argv[], char *envp[])
-{
-	int			identifier;
-	t_arguments	*args;
-	int status;
-	
-	args = NULL;
-	if (!parser(argc, argv))
-		ft_shut(ARG, 0);
-	args = arg_reader(argc, argv, envp);
-	args->fds = arg_descriptors(args);
 	if (pipe(args->fds) == -1)
 		ft_shut(MSG, 0);
 	identifier = fork();
@@ -85,25 +49,43 @@ int	main(int argc, char *argv[], char *envp[])
 		first_son(args);
 	else if (identifier > 0)
 	{
+		i = -1;
 		wait(&status);
-		while (args->total_commands - 2)
-		{
-			close(args->fds[1]);
-			args->total_commands--;
+		close(args->fds[1]);
+		while (++i < args->total_commands - 2)
 			mid_process(args);
-		}
-		parent_continues(args);
+		end_process(args);
 	}
 	else
-		ft_shut("Error at fork creation\n", 0);
-		
+		ft_shut(FORK_ERROR, 0);
+}
+
+/** EXECUTION : /pipex file1 command1 command2 file2
+ * The program will mimic the behaviour of '|' in shell.
+ * 1. Parser arguments.
+ * 2. Read int structure
+ * 3. Execcut process and clean memory */
+int	main(int argc, char *argv[], char *envp[])
+{
+	t_arguments	*args;
+
+	args = NULL;
+	if (!parser(argc, argv))
+		ft_shut(ARG, 0);
+	args = arg_reader(argc, argv, envp);
+	args->fds = arg_descriptors(args);
+	process_exe(args);
 	ft_clean(args);
 	exit(0);
 }
-
 
 //push swap mil numeros + wc
 
 //cat | cat | ls
 	//wait(status); Si esta fuera hara todo simutaneo. es como funciona bash
 	//si estuvies ddentro, es cuando en cada proceso espera.
+
+/** PURPOSE : shutdown program freeing heap allocated memory.
+ * 1. Clean memory for argument.
+ * 3. Print error message. */
+//void	ft_shutdown(t_time *arg)

@@ -1,1 +1,0 @@
-1. Cuando ejecuto hijos en pipex, comprpopbar si va a un fichero o no.

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 14:35:55 by guilmira          #+#    #+#             */
-/*   Updated: 2021/11/29 12:24:37 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/01 12:55:10 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 /** PURPOSE : Locates environment variable that starts with
  * the characters PATH= and splits it into a table. */
-static char **get_full_path(char *envp[])
+static char	**get_full_path(char *envp[])
 {
-	int		i;
-	
+	int	i;
+
 	i = -1;
 	while (envp[++i])
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
@@ -28,8 +28,8 @@ static char **get_full_path(char *envp[])
 /** PURPOSE : Reforms the string table by adding the char slash '/'. */
 static char	**add_slash_to_path(char **full_path)
 {
-	int i;
-	char *added_slash;
+	int		i;
+	char	*added_slash;
 
 	i = -1;
 	while (full_path[++i])
@@ -38,17 +38,17 @@ static char	**add_slash_to_path(char **full_path)
 		if (!added_slash)
 		{
 			ft_free_split(full_path);
-			return(NULL);
+			return (NULL);
 		}
 		free(full_path[i]);
 		full_path[i] = added_slash;
 	}
-	return(full_path);
+	return (full_path);
 }
 
 /** PURPOSE : Returns a string table with the direction of every single
  * folder where the commands might be contained. */
-static char **get_env_path(char *envp[])
+static char	**get_env_path(char *envp[])
 {
 	char	*new_string;
 	char	**full_path;
@@ -74,10 +74,10 @@ static char **get_env_path(char *envp[])
 /** PURPOSE : Builds linked list by allocating memory for a structure and
  * making that same structure the content of each node. Fills the path and 
  * the command fields. */
-static t_list *load_linked_list(char *argv[], int argc, char *envp[], int modifier)
+static t_list	*load_linked_list(char *argv[], int mod, char *envp[], int coms)
 {
 	int			i;
-	char 		**folders;
+	char		**folders;
 	t_list		*lst;
 	t_command	*command_struct;
 
@@ -86,8 +86,7 @@ static t_list *load_linked_list(char *argv[], int argc, char *envp[], int modifi
 	if (!folders)
 		return (NULL);
 	i = -1;
-	argc = argc - modifier;
-	while (++i < argc)
+	while (++i < coms)
 	{
 		command_struct = ft_calloc(1, sizeof(t_command));
 		if (!command_struct)
@@ -95,7 +94,7 @@ static t_list *load_linked_list(char *argv[], int argc, char *envp[], int modifi
 			ft_free_split(folders);
 			return (NULL);
 		}
-		command_struct->command = ft_split(argv[i + modifier], ' ');
+		command_struct->command = ft_split(argv[i + mod], ' ');
 		command_struct->path = set_path(command_struct->command[0], folders);
 		ft_lstadd_back(&lst, ft_lstnew(command_struct));
 	}
@@ -103,32 +102,22 @@ static t_list *load_linked_list(char *argv[], int argc, char *envp[], int modifi
 	return (lst);
 }
 
-/** PURPOSE : Load arguments into structure. */
+/** PURPOSE : Load arguments into structure. 
+ * 1. Allocates memory for structure.
+ * 2. Checks whether program needs to take into account in/outoyt files.
+ * 3. Creates linked list to manage any number of commands */
 t_arguments	*arg_reader(int argc, char *argv[], char *envp[])
 {
-	
+	int			mod;
 	t_arguments	*args;
-	int modifier;
 
-	modifier = 0;
 	args = ft_calloc(1, sizeof(t_arguments));
 	if (!args)
 		ft_shut(MEM, 0);
-	args->total_commands = argc - 1;
-	if (file_detector(argc, argv))
-	{
-		args->flag_file = 1;
-		args->file_input = argv[2];
-		args->file_output = argv[6];
-		modifier = 3;
-		args->total_commands = argc - 4;
-	}
-	else
-		args->flag_file = 0;
-	args->commands_lst = load_linked_list(argv, argc, envp, modifier);
+	mod = file_management(argc, argv, args);
+	args->commands_lst = load_linked_list(argv, mod, \
+	envp, args->total_commands);
 	if (!args->commands_lst)
 		ft_shut(ARG, 0);
-	
-	args->command_number = 0;
 	return (args);
 }

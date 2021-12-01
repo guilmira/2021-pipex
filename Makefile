@@ -6,16 +6,14 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 13:08:33 by guilmira          #+#    #+#              #
-#    Updated: 2021/12/01 09:14:55 by guilmira         ###   ########.fr        #
+#    Updated: 2021/12/01 13:20:08 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#ARGS = 1files/infile.txt "ls -l" "wc -l" 1files/outfile.txt
-#ARGS = 1files/infile.txt "ls -l" "grep drw" "wc -l" 1files/outfile.txt
-ARGS = "<" 1files/infile.txt "ls -la" "grep drw" "wc -l" 1files/outfile.txt
-# < 1files/infile.txt ls -la | grep drw | wc -l > 1files/outfile.txt
+ARGS = "ls -la" "grep drw" "wc -l" "wc" "wc -l"
 #Shell command: 	$> 		 < file1 command1 | command2 > file2
 #Is equivalent to: 	$> ./pipex file1 command1 command2 file2
+#ARGS = "<" 1files/infile.txt "ls -la" "grep drw" "wc -l" "wc" "wc -l" 1files/outfile.txt
 #--------------------------------------------------------------------------------------------------------------COMPILER
 NAME		= pipex
 CC			= gcc
@@ -25,8 +23,8 @@ LIB_DIR		= libft_submodule
 LIB			= $(LIB_DIR)/libft.a
 INCLUDES	= -I ./0includes -I ./libft_submodule/0includes
 #--------------------------------------------------------------------------------------------------------------SOURCES
-SRCS		=	pipex.c 0parser.c 0reader.c 0type.c \
-				1parent.c 2son.c 4auxiliar.c
+SRCS		=	pipex.c 0files.c 0parser.c 0reader.c \
+				1mid_parent_son.c 2son.c 4auxiliar.c
 OBJS		=	$(SRCS:.c=.o)
 #--------------------------------------------------------------------------------------------------------------RULES
 all: $(LIB) $(NAME)
@@ -42,7 +40,7 @@ $(NAME): $(OBJS) $(LIB)
 	@echo $(GREEN) "$(NAME) compiled" $(NONE)
 
 exe: $(NAME)
-	#rm 1files/outfile.txt
+	#@rm 1files/outfile.txt
 	./$(NAME) $(ARGS)
 
 norm:

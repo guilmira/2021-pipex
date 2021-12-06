@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 11:03:44 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/01 13:21:18 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/06 10:58:03 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ static void	mid_son(int index, t_arguments *args)
 	command_struct = NULL;
 	command_struct = ft_lst_position(args->commands_lst, args->command_number);
 	if (!command_struct)
-		ft_shut(LST, 0);
+		ft_shutdown(LST, 0, args);
 	if (dup2(args->fds[index - 2], STDIN_FILENO) == -1)
-		ft_shut(DUP_ERROR, 0);
+		ft_shutdown(DUP_ERROR, 0, args);
 	close(args->fds[index - 2]);
 	if (dup2(args->fds[index + 1], STDOUT_FILENO) == -1)
-		ft_shut(DUP_ERROR, 0);
+		ft_shutdown(DUP_ERROR, 0, args);
 	close(args->fds[index + 1]);
 	if (execve(command_struct->path, command_struct->command, NULL) == -1)
-		ft_shut(EXE_ERROR, 0);
+		ft_shutdown(EXE_ERROR, 0, args);
 }
 
 /** PURPOSE : Mid process for all the commands that are not
@@ -59,7 +59,7 @@ void	mid_process(t_arguments *args)
 	args->command_number++;
 	index = args->command_number * 2;
 	if (pipe(&args->fds[index]) == -1)
-		ft_shut(MSG, 0);
+		ft_shutdown(MSG, 0, args);
 	identifier = fork();
 	if (identifier == 0)
 	{
@@ -73,5 +73,5 @@ void	mid_process(t_arguments *args)
 		return ;
 	}
 	else
-		ft_shut(FORK_ERROR, 0);
+		ft_shutdown(FORK_ERROR, 0, args);
 }

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 12:48:01 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/01 12:54:49 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/06 10:16:38 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	file_detector(int argc, char *argv[])
 	return (0);
 }
 
-/** PURPOSE : Looad into struct file descriptors for input and output. */
+/** PURPOSE : Load into struct file descriptors for input and output. */
 static int	file_arrangement(int argc, char *argv[], t_arguments *args)
 {
 	int	i;
@@ -69,7 +69,6 @@ static int	file_arrangement(int argc, char *argv[], t_arguments *args)
 				args->file_output = argv[i];
 				return (1);
 			}
-			// if (file_exists(argv[i])) //double check
 		}
 	}
 	return (0);

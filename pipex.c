@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/01 13:23:20 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/06 11:05:15 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	end_process(t_arguments *args)
 	else if (identifier > 0)
 		wait(&status);
 	else
-		ft_shut(FORK_ERROR, 0);
+		ft_shutdown(FORK_ERROR, 0, args);
 	return (0);
 }
 
@@ -43,7 +43,7 @@ static void	process_exe(t_arguments *args)
 	int	identifier;
 
 	if (pipe(args->fds) == -1)
-		ft_shut(MSG, 0);
+		ft_shutdown(MSG, 0, args);
 	identifier = fork();
 	if (identifier == 0)
 		first_son(args);
@@ -57,7 +57,13 @@ static void	process_exe(t_arguments *args)
 		end_process(args);
 	}
 	else
-		ft_shut(FORK_ERROR, 0);
+		ft_shutdown(FORK_ERROR, 0, args);
+}
+
+/** PURPOSE : Auxiliar for detction of mem leaks in program. */
+void	ft_leaks(void)
+{
+	system("leaks pipex");
 }
 
 /** EXECUTION : /pipex file1 command1 command2 file2
@@ -69,13 +75,14 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_arguments	*args;
 
+	atexit(&ft_leaks);
 	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
 	args = arg_reader(argc, argv, envp);
 	args->fds = arg_descriptors(args);
 	process_exe(args);
-	ft_clean(args);
+	free_heap_memory(args);
 	exit(0);
 }
 
@@ -84,8 +91,3 @@ int	main(int argc, char *argv[], char *envp[])
 //cat | cat | ls
 	//wait(status); Si esta fuera hara todo simutaneo. es como funciona bash
 	//si estuvies ddentro, es cuando en cada proceso espera.
-
-/** PURPOSE : shutdown program freeing heap allocated memory.
- * 1. Clean memory for argument.
- * 3. Print error message. */
-//void	ft_shutdown(t_time *arg)

@@ -6,14 +6,14 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/06 11:05:15 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/06 12:07:48 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 /** PURPOSE : End of the process.
- * 1. Final fork + execute last son.*/
+ * 1. Final fork + execute last son. */
 static int	end_process(t_arguments *args)
 {
 	int	identifier;
@@ -61,21 +61,21 @@ static void	process_exe(t_arguments *args)
 }
 
 /** PURPOSE : Auxiliar for detction of mem leaks in program. */
-void	ft_leaks(void)
+/* void	ft_leaks(void)
 {
 	system("leaks pipex");
-}
+} */
 
 /** EXECUTION : /pipex file1 command1 command2 file2
  * The program will mimic the behaviour of '|' in shell.
  * 1. Parser arguments.
- * 2. Read int structure
- * 3. Execcut process and clean memory */
+ * 2. Read int structure.
+ * 3. Execcut process and clean memory. */
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_arguments	*args;
 
-	atexit(&ft_leaks);
+	//atexit(&ft_leaks);
 	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);
@@ -85,8 +85,6 @@ int	main(int argc, char *argv[], char *envp[])
 	free_heap_memory(args);
 	exit(0);
 }
-
-//push swap mil numeros + wc
 
 //cat | cat | ls
 	//wait(status); Si esta fuera hara todo simutaneo. es como funciona bash

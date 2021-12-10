@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:17:27 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/06 12:07:48 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/10 09:37:30 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,15 @@ static void	process_exe(t_arguments *args)
 		ft_shutdown(FORK_ERROR, 0, args);
 }
 
-/** PURPOSE : Auxiliar for detction of mem leaks in program. */
-/* void	ft_leaks(void)
-{
-	system("leaks pipex");
-} */
-
 /** EXECUTION : /pipex file1 command1 command2 file2
  * The program will mimic the behaviour of '|' in shell.
  * 1. Parser arguments.
  * 2. Read int structure.
- * 3. Execcut process and clean memory. */
+ * 3. Execute process and clean memory. */
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_arguments	*args;
 
-	//atexit(&ft_leaks);
 	args = NULL;
 	if (!parser(argc, argv))
 		ft_shut(ARG, 0);

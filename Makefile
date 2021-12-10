@@ -6,18 +6,18 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 13:08:33 by guilmira          #+#    #+#              #
-#    Updated: 2021/12/06 10:48:24 by guilmira         ###   ########.fr        #
+#    Updated: 2021/12/10 09:37:08 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ARGS = "ls -la" "grep drw" "wc -l" "wc" "wc -l"
+ARGS = "ls -la" "grep drw" "wc -l"
 #Shell command: 	$> 		 < file1 command1 | command2 > file2
 #Is equivalent to: 	$> ./pipex file1 command1 command2 file2
 #ARGS = "<" 1files/infile.txt "ls -la" "grep drw" "wc -l" "wc" "wc -l" 1files/outfile.txt
 #--------------------------------------------------------------------------------------------------------------COMPILER
 NAME		= pipex
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -g -fsanitize=address
 #--------------------------------------------------------------------------------------------------------------LIBS
 LIB_DIR		= libft_submodule
 LIB			= $(LIB_DIR)/libft.a

@@ -6,7 +6,7 @@
 /*   By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 13:12:15 by guilmira          #+#    #+#             */
-/*   Updated: 2021/12/06 10:46:43 by guilmira         ###   ########.fr       */
+/*   Updated: 2021/12/08 12:16:42 by guilmira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ void		*ft_lst_position(t_list *lst, int n);
 
 /* MEMORY MGMT */
 void		ft_shut(char *str, int i);
-void	free_heap_memory(t_arguments *args);
+void		free_heap_memory(t_arguments *args);
 void		ft_shutdown(char *str, int i, t_arguments *args);
 #endif
